@@ -15,7 +15,10 @@ app.use(bodyParser.json()); // Todo los datos que lleguen por el body de una pet
 // Cors
 
 // Rutas
-app.get('/test', (request, response) =>{
+app.post('/test/:id', (request, response) =>{
+    console.log(request.body.nombre); // Agarra los parametros del body
+    console.log(request.query.web); // Agarra todas las cosas extra enviadas por la URL despues de poner el id
+    console.log(request.params.id); // Agarra el parametro id de la peticion por la URL
     response.status(200).send({
         message: "Hola desde mi api"
     });
