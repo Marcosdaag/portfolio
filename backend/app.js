@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var app = express();
 
 // Archivo de rutas
+var project_routes = require('./routes/project.routes');
 
 //Middlewares (son funciones que se ejecutan antes ejecutar el resultado de la peticion: por ejemplo antes de enviar mi informacion, la pasa a formato JSON para que la database pueda interpretarla y usarla)
 app.use(bodyParser.urlencoded({extended: false}));
@@ -14,15 +15,9 @@ app.use(bodyParser.json()); // Todo los datos que lleguen por el body de una pet
 
 // Cors
 
-// Rutas
-app.post('/test/:id', (request, response) =>{
-    console.log(request.body.nombre); // Agarra los parametros del body
-    console.log(request.query.web); // Agarra todas las cosas extra enviadas por la URL despues de poner el id
-    console.log(request.params.id); // Agarra el parametro id de la peticion por la URL
-    response.status(200).send({
-        message: "Hola desde mi api"
-    });
-});
+
+//Rutas
+app.use('/api', project_routes);
 
 // Exportacion del modulo, archivo o fichero actual
 module.exports = app;
