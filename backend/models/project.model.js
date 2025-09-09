@@ -11,7 +11,8 @@ var ProjectSchema = Schema({
     description: String,
     category: String,
     year: Number,
-    langs: [String]
+    langs: String,
+    image: String
 });
 
 // Exportamos el modelo, como primer parametro seleccionamos en que coleccion de datos se va a guardar pero mongoose lo pasa a minusculas y lo pluraliza, por lo tanto quedaria "projects" que es una coleccion ya creada en mongoDB y por otro lado como segundo parametro pasamos el MODELO-SCHEMA que creamos

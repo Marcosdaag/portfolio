@@ -9,5 +9,6 @@ var router = express.Router(); // Servicio para acceder a rutas de el modulo exp
 // Rutas
 router.get('/home', ProjectController.home);
 router.post('/test', ProjectController.test);
+router.post('/save-project', ProjectController.saveProject);
 
 module.exports = router;
