@@ -1,23 +1,50 @@
-// Configuracion de express y peticiones con body-parser
 'use strict'
+// Guardamos toda la configuracion de express y las peticiones con bodyparser
 
-// Cuando uso require, se busca en la carpeta node_modules el modulo a importar para tener su funcionalidad
 var express = require('express');
 var bodyParser = require('body-parser');
+
 var app = express();
 
-// Archivo de rutas
-var project_routes = require('./routes/project.routes');
+// Cargar archivo de rutas
+var project_routes = require('./routes/project');
 
-//Middlewares (son funciones que se ejecutan antes ejecutar el resultado de la peticion: por ejemplo antes de enviar mi informacion, la pasa a formato JSON para que la database pueda interpretarla y usarla)
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json()); // Todo los datos que lleguen por el body de una peticion los convierte en JSON
+// Middlewares: capa o metodo que se ejecuta antes de ejecutar la accion de un controlador o el resultado de la peticion
+app.use(bodyParser.urlencoded({extended: false})); // Configuracion necesaria para body parser
+app.use(bodyParser.json()); // Esto hace que todos los datos que me lleguen son pasados a json
 
 // Cors
+// Configurar cabeceras y cors
 
+app.use((req, res, next) => {
 
-//Rutas
-app.use('/api', project_routes);
+res.header('Access-Control-Allow-Origin', '*');
 
-// Exportacion del modulo, archivo o fichero actual
-module.exports = app;
+res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+
+res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+
+res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+
+next();
+
+});
+
+// Rutas
+/* app.get('/', (request, response) =>{
+    response.status(200).send({message: "Pagina de inicio"});
+});
+
+app.get('/test', (request, response) =>{
+    response.status(200).send({message: "Hola mundo desde mi api de nodejs"});
+});
+
+app.post('/test', (request, response) =>{
+    console.log(request.body.nombre);
+    response.status(200).send({message: "Hola mundo desde mi api de nodejs peticiones post"});
+}); */
+// Ademas de esta manera, la otra forma de hacerlo es definirlo dentro de la carpeta routes, creamos ahi los metodos y despues lo importamos aca
+app.use('/', project_routes);
+
+// Exportar
+module.exports =  app;

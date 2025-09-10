@@ -7,23 +7,19 @@ var Project = require('../models/project.model');
 // Creo una variable controller donde almaceno en formato JSON mis funciones
 var controller = {
 
-    home: function(request, response){
-        return response.status(200).send({message: "Soy la home"});
+    home: function (request, response) {
+        return response.status(200).send({ message: "Soy la home" });
     },
 
-    test: function(request, response){
-        return response.status(200).send({message: "Soy el test"});
-    },
-
-    saveProject: function(request, response){
-        
+    test: function (request, response) {
+        return response.status(200).send({ message: "Soy el test" });
     },
 
     // Funcion para guardar, primero creamos una variable project la cuales un elemento nuevo de tipo Project, despues creo una variable params que agarra todos los datos del body y a cada propiedad del proyecto le asigno una propiedad de los parametros. Despues hacemos un project.save y usamos una promesa then que tiene una funcion de callback con un parametro projectStored que en casi de que sea true da status 200 y nos devuelve el mensaje por consola y con el cath nos devuelve si salio mal, en caso de 
-    saveProject: function (req, res) {
+    saveProject: function (request, response) {
         var project = new Project();
 
-        var params = req.body;
+        var params = request.body;
         project.name = params.name;
         project.description = params.description;
         project.category = params.category;
@@ -45,6 +41,21 @@ var controller = {
                 if (error)
                     return res.status(500).send({ error: "Error al guardar el proyecto en la base de datos" });
             });
+    },
+
+    //Funcion que nos devuelve un elemento de nuestra base de datos
+    getProject: async function (request, response) {
+        var projectId = request.params.id;
+        
+        if (projectId == null) return response.status(404).send({ message: "Ingresa un proyect id" });
+
+        try {
+            const project = await Project.findById(projectId);
+            if (!project) return response.status(404).send({ message: "El proyecto no existe" });
+            return response.status(200).send({ project });
+        } catch (err) {
+            return response.status(500).send({ message: "Error al devolver los datos del proyecto" });
+        }
     }
 };
 
